@@ -1,25 +1,42 @@
-import { useEffect, useState } from "react"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useRef, useState } from "react"
 import * as esbuild from 'esbuild-wasm'
+
+// type EsType =
+//   esbuild.Platform | esbuild.Format
+//   | esbuild.Loader
+//   | esbuild.LogLevel
+//   | esbuild.Charset
+//   | esbuild.Drop
+
 function App() {
+  const ref = useRef<any>(null)
 
   const startSevice = async () => {
-    const service = await esbuild.initialize({
-      worker: true,
-      wasmURL: './esbuild.wasm'
-    })
-    console.log(service)
+      ref.current = await esbuild.initialize({
+        worker: true,
+        wasmURL: './esbuild.wasm',
+      })
+
+    ref.current = esbuild
   }
 
   const [input, setInput] = useState('')
   const [code, setCode] = useState('')
   useEffect(() => {
-
+    startSevice()
   }, [])
 
-  const onClick = () => {
-    // setCode(input)
-    console.log(input)
-  }
+  const onClick = async () => {
+    if (!ref.current) {
+      return
+    }
+    const result = await ref.current.transform(
+      input, {
+      loader: 'jsx',
+      target: 'es2015'
+    })
+setCode(result.code)  }
 
   return (
     <>
@@ -28,7 +45,7 @@ function App() {
       </div>
       <button onClick={onClick} type="submit">Submit</button>
       <div>
-        <pre>{'./esbuild.wasm'}</pre>
+        <pre>{code}</pre>
       </div>
     </>
   )
