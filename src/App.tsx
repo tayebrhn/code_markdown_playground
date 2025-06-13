@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react"
 import * as esbuild from 'esbuild-wasm'
+import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin"
 
 // type EsType =
 //   esbuild.Platform | esbuild.Format
@@ -13,10 +14,10 @@ function App() {
   const ref = useRef<any>(null)
 
   const startSevice = async () => {
-      ref.current = await esbuild.initialize({
-        worker: true,
-        wasmURL: './esbuild.wasm',
-      })
+    ref.current = await esbuild.initialize({
+      worker: true,
+      wasmURL: './esbuild.wasm',
+    })
 
     ref.current = esbuild
   }
@@ -31,12 +32,15 @@ function App() {
     if (!ref.current) {
       return
     }
-    const result = await ref.current.transform(
-      input, {
-      loader: 'jsx',
-      target: 'es2015'
+    const result = await ref.current.build({
+      entryPoints: ['index.js'],
+      bundle: true,
+      write: false,
+      plugins: [unpkgPathPlugin()]
     })
-setCode(result.code)  }
+    // console.log(result)
+    setCode(result.outputFiles[0].text)
+  }
 
   return (
     <>
