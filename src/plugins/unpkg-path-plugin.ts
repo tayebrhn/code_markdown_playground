@@ -1,37 +1,36 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
-import * as esbuild from 'esbuild-wasm';
+import * as esbuild from "esbuild-wasm";
 
 export const unpkgPathPlugin = () => {
   return {
-    name: 'unpkg-path-plugin',
+    name: "unpkg-path-plugin",
     setup(build: esbuild.PluginBuild) {
-      build.onResolve({ filter: /.*/ }, async (args: any) => {
-        console.log('onResolve', args);
-        if (args.path==='index.js') {
-          return { path: args.path, namespace: 'a' }
-        } else {
-          return { path: 'https://unpkg.com/tiny-test-pkg@1.0.0/index.js', namespace: 'a' }
+      //handle root entry 'index.js'
+      build.onResolve(
+        {
+          filter: /(^index\.js$)/,
+        },
+        () => {
+          return { path: "index.js", namespace: "a" };
         }
-      });
-
-      build.onLoad({ filter: /.*/ }, async (args: any) => {
-        console.log('onLoad', args);
-
-        if (args.path === 'index.js') {
+      );
+      //handle relative paths in module
+      build.onResolve(
+        {
+          filter: /^\.+\//,
+        },
+        async (args) => {
           return {
-            loader: 'jsx',
-            contents: `
-              import message from 'tiny-test-pkg';
-              console.log(message);
-            `,
-          }
+            path: new URL(
+              args.path,
+              "https://unpkg.com" + args.resolveDir + "/"
+            ).href,
+            namespace: "a",
+          };
         }
-        const {data} = await axios.get(args.path)
-        return {
-          loader:'jsx',
-          contents:data
-        }
+      );
+      //handle main entry of a module
+      build.onResolve({ filter: /.*/ }, async (args) => {
+        return { path: `https://unpkg.com/${args.path}`, namespace: "a" };
       });
     },
   };

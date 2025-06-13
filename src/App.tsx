@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState } from "react"
-import * as esbuild from 'esbuild-wasm'
-import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin"
+import { useEffect, useRef, useState } from "react";
+import * as esbuild from "esbuild-wasm";
+import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
+import { fetchPlugin } from "./plugins/fetch-plugin";
 
 // type EsType =
 //   esbuild.Platform | esbuild.Format
@@ -11,48 +12,62 @@ import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin"
 //   | esbuild.Drop
 
 function App() {
-  const ref = useRef<any>(null)
+  const ref = useRef<any>(null);
 
   const startSevice = async () => {
     ref.current = await esbuild.initialize({
       worker: true,
-      wasmURL: './esbuild.wasm',
-    })
+      wasmURL: "./esbuild.wasm",
+    });
 
-    ref.current = esbuild
-  }
+    ref.current = esbuild;
+  };
 
-  const [input, setInput] = useState('')
-  const [code, setCode] = useState('')
+  const [input, setInput] = useState("");
+  const [code, setCode] = useState("");
   useEffect(() => {
-    startSevice()
-  }, [])
+    if (!ref.current) {
+      startSevice();
+    }
+  }, []);
 
   const onClick = async () => {
     if (!ref.current) {
-      return
+      return;
     }
     const result = await ref.current.build({
-      entryPoints: ['index.js'],
+      entryPoints: ["index.js"],
       bundle: true,
       write: false,
-      plugins: [unpkgPathPlugin()]
-    })
+      plugins: [unpkgPathPlugin(), fetchPlugin(input)],
+      define: {
+        global: "window",
+      },
+    });
     // console.log(result)
-    setCode(result.outputFiles[0].text)
-  }
+    setCode(result.outputFiles[0].text);
+  };
 
   return (
     <>
       <div>
-        <textarea value={input} onChange={event => setInput(event.target.value)} name="" id="" rows={10} cols={50}></textarea>
+        <textarea
+          value={input}
+          onChange={(event) => setInput(event.target.value)}
+          name=""
+          id=""
+          rows={10}
+          cols={50}
+        ></textarea>
       </div>
-      <button onClick={onClick} type="submit">Submit</button>
+      <button onClick={onClick} type="submit">
+        Submit
+      </button>
       <div>
         <pre>{code}</pre>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
