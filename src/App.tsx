@@ -4,15 +4,9 @@ import * as esbuild from "esbuild-wasm";
 import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
 
-// type EsType =
-//   esbuild.Platform | esbuild.Format
-//   | esbuild.Loader
-//   | esbuild.LogLevel
-//   | esbuild.Charset
-//   | esbuild.Drop
-
 function App() {
   const ref = useRef<any>(null);
+  const iframeRef = useRef<any>(null);
 
   const startSevice = async () => {
     ref.current = await esbuild.initialize({
@@ -24,7 +18,6 @@ function App() {
   };
 
   const [input, setInput] = useState("");
-  const [code, setCode] = useState("");
   useEffect(() => {
     if (!ref.current) {
       startSevice();
@@ -35,6 +28,8 @@ function App() {
     if (!ref.current) {
       return;
     }
+
+    iframeRef.current.srcDoc = html;
     const result = await ref.current.build({
       entryPoints: ["index.js"],
       bundle: true,
@@ -44,9 +39,32 @@ function App() {
         global: "window",
       },
     });
-    // console.log(result)
-    setCode(result.outputFiles[0].text);
+    iframeRef.current.contentWindow.postMessage(
+      result.outputFiles[0].text,
+      "*"
+    );
   };
+  const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+  window.addEventListener('message',(event)=>{
+try{
+eval(event.data);
+}catch(error){
+const root = document.querySelector('#root')
+root.innerHTML = '<div style="color:red"> <h4>Runtime Error</h4> '+error+'</div>'
+
+console.error(err)}
+  },false)
+  </script>
+</body>
+</html>
+  `;
 
   return (
     <>
@@ -54,7 +72,7 @@ function App() {
         <textarea
           value={input}
           onChange={(event) => setInput(event.target.value)}
-          name=""
+          name="code"
           id=""
           rows={10}
           cols={50}
@@ -64,7 +82,12 @@ function App() {
         Submit
       </button>
       <div>
-        <pre>{code}</pre>
+        <iframe
+          title="preview"
+          ref={iframeRef}
+          srcDoc={html}
+          sandbox="allow-scripts"
+        ></iframe>
       </div>
     </>
   );
