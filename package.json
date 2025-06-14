@@ -10,12 +10,13 @@
   },
   "dependencies": {
     "@monaco-editor/react": "4.7.0",
+    "@types/prettier": "2.7.3",
     "axios": "1.9.0",
     "esbuild-wasm": "0.25.5",
     "localforage": "1.10.0",
+    "prettier": "3.5.3",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "vite-plugin-monaco-editor": "1.1.0"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@types/react": "^19.1.2",
