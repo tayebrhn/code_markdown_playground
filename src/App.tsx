@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import * as esbuild from "esbuild-wasm";
 import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
-
+import CodeEditor from "./components/code-editor";
 function App() {
   const ref = useRef<any>(null);
   const iframeRef = useRef<any>(null);
@@ -17,7 +17,7 @@ function App() {
     ref.current = esbuild;
   };
 
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState<string|undefined>("");
   useEffect(() => {
     if (!ref.current) {
       startSevice();
@@ -34,7 +34,7 @@ function App() {
       entryPoints: ["index.js"],
       bundle: true,
       write: false,
-      plugins: [unpkgPathPlugin(), fetchPlugin(input)],
+      plugins: [unpkgPathPlugin(), fetchPlugin(input as string)],
       define: {
         global: "window",
       },
@@ -69,14 +69,10 @@ console.error(err)}
   return (
     <>
       <div>
-        <textarea
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          name="code"
-          id=""
-          rows={10}
-          cols={50}
-        ></textarea>
+        <CodeEditor
+          defaultValue="const a = 1"
+          onChange={(value) => setInput(value)}
+        />
       </div>
       <button onClick={onClick} type="submit">
         Submit
