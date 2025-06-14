@@ -1,3 +1,4 @@
+//code editor
 import { Editor, loader, type OnMount } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
 import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
@@ -5,10 +6,14 @@ import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
 import cssWorker from "monaco-editor/esm/vs/language/css/css.worker?worker";
 import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
 import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
-
+//code hightlighting
 import prettier from "prettier";
-import parser from "prettier/plugins/babel";
+import babelParser from "prettier/plugins/babel";
 import esTree from "prettier/plugins/estree";
+//jsx higthlighting
+import { parse } from "@babel/parser";
+import traverse from "@babel/traverse";
+import MonacoJSXHighlighter, { makeBabelParse } from "monaco-jsx-highlighter";
 
 self.MonacoEnvironment = {
   getWorker(_, label) {
@@ -30,13 +35,18 @@ self.MonacoEnvironment = {
 loader.config({ monaco });
 loader.init().then(/* ... */);
 
-// import { Editor } from "@monaco-editor/react";
 import type React from "react";
 import { useRef } from "react";
 interface CodeEditorProps {
   defaultValue: string;
   onChange(value: string | undefined): void;
 }
+
+const babelParse = (code: string) =>
+  parse(code, {
+    sourceType: "module",
+    plugins: ["jsx"],
+  });
 
 const CodeEditor: React.FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>(null);
@@ -48,6 +58,18 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
   const handleEditorDidMount: OnMount = (editor) => {
     onChange(editor.getValue());
     editorRef.current = editor;
+    // Instantiate the highlighter
+    const monacoJSXHighlighter = new MonacoJSXHighlighter(
+      monaco,
+      babelParse,
+      traverse,
+      editor
+    );
+    // Activate highlighting (debounceTime default: 100ms)
+    monacoJSXHighlighter.highlightOnDidChangeModelContent(100);
+    // Activate JSX commenting
+    monacoJSXHighlighter.addJSXCommentCommand();
+    // Done =)
   };
 
   const onFormatClick = async () => {
@@ -55,7 +77,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
       const unformatted = editorRef.current.getValue() as string;
       const formatted = await prettier.format(unformatted, {
         parser: "babel",
-        plugins: [parser, esTree],
+        plugins: [babelParser, esTree],
       });
 
       editorRef.current.setValue(formatted);

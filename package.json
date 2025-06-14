@@ -9,11 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/parser": "^7.27.5",
+    "@babel/traverse": "^7.27.4",
     "@monaco-editor/react": "4.7.0",
     "@types/prettier": "2.7.3",
     "axios": "1.9.0",
     "esbuild-wasm": "0.25.5",
     "localforage": "1.10.0",
+    "monaco-jsx-highlighter": "2.77.77",
     "prettier": "3.5.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
