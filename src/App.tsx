@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import 'bulmaswatch/slate/bulmaswatch.min.css'
 import { useEffect, useRef, useState } from "react";
 import * as esbuild from "esbuild-wasm";
 import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
 import CodeEditor from "./components/code-editor";
+
 function App() {
   const ref = useRef<any>(null);
   const iframeRef = useRef<any>(null);
@@ -17,7 +18,7 @@ function App() {
     ref.current = esbuild;
   };
 
-  const [input, setInput] = useState<string|undefined>("");
+  const [input, setInput] = useState<string | undefined>("");
   useEffect(() => {
     if (!ref.current) {
       startSevice();

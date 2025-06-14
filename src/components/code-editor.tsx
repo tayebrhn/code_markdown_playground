@@ -1,3 +1,4 @@
+import "./code-editor.css"
 //code editor
 import { Editor, loader, type OnMount } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
@@ -66,9 +67,15 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
       editor
     );
     // Activate highlighting (debounceTime default: 100ms)
-    monacoJSXHighlighter.highlightOnDidChangeModelContent(100);
+    monacoJSXHighlighter.highlightOnDidChangeModelContent(
+      100,
+      () => {},
+      () => {},
+      undefined,
+      () => {}
+    );
     // Activate JSX commenting
-    monacoJSXHighlighter.addJSXCommentCommand();
+    monacoJSXHighlighter.addJSXCommentCommand({ JSX: "JSX" });
     // Done =)
   };
 
@@ -84,8 +91,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
     }
   };
   return (
-    <div>
-      <button onClick={onFormatClick}>Format</button>
+    <div className="editor-wrapper">
+      <button className="button button-format is-primary is-small" onClick={onFormatClick}>Format</button>
       <Editor
         height="70vh"
         width="100vh"
