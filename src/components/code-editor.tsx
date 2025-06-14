@@ -1,4 +1,4 @@
-import "./code-editor.css"
+import "./code-editor.css";
 //code editor
 import { Editor, loader, type OnMount } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
@@ -87,12 +87,17 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
         plugins: [babelParser, esTree],
       });
 
-      editorRef.current.setValue(formatted);
+      editorRef.current.setValue(formatted.replace(/\n$/, ""));
     }
   };
   return (
     <div className="editor-wrapper">
-      <button className="button button-format is-primary is-small" onClick={onFormatClick}>Format</button>
+      <button
+        className="button button-format is-primary is-small"
+        onClick={onFormatClick}
+      >
+        Format
+      </button>
       <Editor
         height="70vh"
         width="100vh"
