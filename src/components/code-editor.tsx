@@ -14,7 +14,7 @@ import esTree from "prettier/plugins/estree";
 //jsx higthlighting
 import { parse } from "@babel/parser";
 import traverse from "@babel/traverse";
-import MonacoJSXHighlighter, { makeBabelParse } from "monaco-jsx-highlighter";
+import MonacoJSXHighlighter from "monaco-jsx-highlighter";
 
 self.MonacoEnvironment = {
   getWorker(_, label) {
@@ -53,7 +53,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>(null);
   const handleEditorOnChange = (value: string | undefined) => {
     onChange(value);
-    console.log(value);
   };
 
   const handleEditorDidMount: OnMount = (editor) => {
@@ -79,6 +78,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
     // Done =)
   };
 
+  // const handleOnValidate = (markers: monaco.editor.IMarker[]) => {
+  //   markers.values
+  // };
   const onFormatClick = async () => {
     if (editorRef.current) {
       const unformatted = editorRef.current.getValue() as string;
@@ -99,10 +101,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
         Format
       </button>
       <Editor
-        height="70vh"
-        width="100vh"
+        height="50vh"
         defaultValue={defaultValue}
         onMount={handleEditorDidMount}
+        // onValidate={handleOnValidate}
         onChange={handleEditorOnChange}
         defaultLanguage="javascript"
         options={{
@@ -113,6 +115,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
           fontSize: 18,
           scrollBeyondLastLine: false,
           automaticLayout: true,
+          theme: "vs-dark",
         }}
       />
     </div>
