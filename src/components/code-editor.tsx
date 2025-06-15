@@ -1,4 +1,5 @@
-import "./code-editor.css";
+import "./styles/code-editor.css";
+import "./styles/syntax.css";
 //code editor
 import { Editor, loader, type OnMount } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
@@ -101,18 +102,18 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
         Format
       </button>
       <Editor
-        height="50vh"
         defaultValue={defaultValue}
         onMount={handleEditorDidMount}
         // onValidate={handleOnValidate}
         onChange={handleEditorOnChange}
+        width="100%"
         defaultLanguage="javascript"
         options={{
           wordWrap: "on",
           minimap: { enabled: false },
           folding: false,
           lineNumbersMinChars: 3,
-          fontSize: 18,
+          fontSize: 17,
           scrollBeyondLastLine: false,
           automaticLayout: true,
           theme: "vs-dark",
