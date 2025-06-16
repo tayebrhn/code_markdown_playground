@@ -5,25 +5,40 @@ interface PreviewProps {
   code: string | undefined;
 }
 const html = `
-<head>
-<style>
-html{background-color: white;}
-</style>
-</head>
-<body>
-  <div id="root"></div>
-  <script>
-  window.addEventListener('message',(event)=>{
-try{
-eval(event.data);
-}catch(error){
-const root = document.querySelector('#root')
-root.innerHTML = '<div style="color:red"> <h4>Runtime Error</h4> '+error+'</div>'
-
-console.error(err)}
-  },false)
-  </script>
-</body>
+<html>
+  <head>
+    <style>
+      html{
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      const handleError = (error) => {
+        const root = document.querySelector("#root");
+        root.innerHTML =
+          '<div style="color:red"> <h4>Runtime Error</h4> ' + error + "</div>";
+        console.error(err);
+      };
+      window.addEventListener("error", (event) => {
+        event.preventDefault();
+        handleError(event.error);
+      });
+      window.addEventListener(
+        "message",
+        (event) => {
+          try {
+            eval(event.data);
+          } catch (error) {
+            handleError(error);
+          }
+        },
+        false,
+      );
+    </script>
+  </body>
 </html>
   `;
 const Preview: React.FC<PreviewProps> = ({ code }) => {
