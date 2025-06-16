@@ -2,7 +2,7 @@ import "./styles/code-cell.css";
 import { useEffect, useState } from "react";
 import CodeEditor from "./code-editor";
 import Preview from "./preview";
-import bundler from "../bundler";
+import bundler from "../../bundler";
 import Resizable from "./resizable";
 
 function CodeCell() {

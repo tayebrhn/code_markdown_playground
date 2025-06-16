@@ -21,8 +21,8 @@ const html = `
   <body>
     <div id="root"></div>
     <script>
+      const root = document.querySelector("#root");      
       const handleError = (error) => {
-        const root = document.querySelector("#root");
         root.innerHTML = '<div style="color:red">' + error + "</div>";
         console.error(error);
       };
@@ -38,6 +38,7 @@ const html = `
               if (event.data.err) {
                 throw event.data.err;
               }
+              root.innerHTML = '';
               eval(event.data.code);
             }
           } catch (error) {
