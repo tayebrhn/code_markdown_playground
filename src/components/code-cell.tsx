@@ -1,5 +1,5 @@
 import "./styles/code-cell.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CodeEditor from "./code-editor";
 import Preview from "./preview";
 import bundler from "../bundler";
@@ -9,10 +9,16 @@ function CodeCell() {
   const [input, setInput] = useState<string>();
   const [code, setCode] = useState<string>();
 
-  const onClick = async () => {
-    const output = await bundler(input as string);
-    setCode(output);
-  };
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      const output = await bundler(input as string);
+      setCode(output);
+    }, 900);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [input]);
 
   return (
     <Resizable direction="vertical">
@@ -23,7 +29,7 @@ function CodeCell() {
             onChange={(value) => setInput(value)}
           />
         </Resizable>
-          <Preview code={code} />
+        <Preview code={code} />
       </div>
     </Resizable>
   );

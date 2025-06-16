@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./styles/resizable.css";
 import { ResizableBox, type ResizableBoxProps } from "react-resizable";
 
@@ -8,13 +8,29 @@ interface ResizableProps {
 }
 
 const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
+  const [innerHeight, setInnerHeight] = useState(window.innerHeight);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  const [width, setWidth] = useState(innerWidth * 0.75);
   let resizableProps: ResizableBoxProps;
 
   useEffect(() => {
-    const listner = () => {};
+    let timer: number;
+    const listner = () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        setInnerHeight(window.innerHeight);
+        setInnerWidth(window.innerWidth);
+        console.log(width)
+        if (window.innerWidth * 75 > width) {
+          setWidth(window.innerWidth * 0.75);
+        }
+      }, 100);
+    };
     window.addEventListener("resize", listner);
     return () => {
-      window.removeEventListener("reset", listner);
+      window.removeEventListener("resize", listner);
     };
   }, []);
 
@@ -22,7 +38,7 @@ const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
     resizableProps = {
       height: 300,
       width: Infinity,
-      maxConstraints: [Infinity, window.innerHeight * 0.9],
+      maxConstraints: [Infinity, innerHeight * 0.9],
       minConstraints: [Infinity, 30],
       resizeHandles: ["s"],
     };
@@ -30,10 +46,13 @@ const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
     resizableProps = {
       className: "resize-horizontal",
       height: Infinity,
-      width: window.innerWidth * 0.75,
-      minConstraints: [window.innerWidth * 0.2, Infinity],
-      maxConstraints: [window.innerWidth * 0.75, Infinity],
+      width,
+      minConstraints: [innerWidth * 0.2, Infinity],
+      maxConstraints: [innerWidth * 0.75, Infinity],
       resizeHandles: ["e"],
+      onResizeStop(e, data) {
+        setWidth(data.size.width);
+      },
     };
   }
   return <ResizableBox {...resizableProps}>{children}</ResizableBox>;
