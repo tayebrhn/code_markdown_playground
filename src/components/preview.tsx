@@ -2,7 +2,12 @@ import "./styles/preview.css";
 import { useEffect, useRef } from "react";
 
 interface PreviewProps {
-  code: string | undefined;
+  output:
+    | {
+        code: string;
+        err: string;
+      }
+    | undefined;
 }
 const html = `
 <html>
@@ -18,9 +23,8 @@ const html = `
     <script>
       const handleError = (error) => {
         const root = document.querySelector("#root");
-        root.innerHTML =
-          '<div style="color:red"> <h4>Runtime Error</h4> ' + error + "</div>";
-        console.error(err);
+        root.innerHTML = '<div style="color:red">' + error + "</div>";
+        console.error(error);
       };
       window.addEventListener("error", (event) => {
         event.preventDefault();
@@ -30,7 +34,12 @@ const html = `
         "message",
         (event) => {
           try {
-            eval(event.data);
+            if (event.data) {
+              if (event.data.err) {
+                throw event.data.err;
+              }
+              eval(event.data.code);
+            }
           } catch (error) {
             handleError(error);
           }
@@ -41,15 +50,15 @@ const html = `
   </body>
 </html>
   `;
-const Preview: React.FC<PreviewProps> = ({ code }) => {
+const Preview: React.FC<PreviewProps> = ({ output }) => {
   const iframeRef = useRef<any>(null);
 
   useEffect(() => {
     iframeRef.current.srcDoc = html;
     setTimeout(() => {
-      iframeRef.current.contentWindow.postMessage(code, "*");
+      iframeRef.current.contentWindow.postMessage(output, "*");
     }, 50);
-  }, [code]);
+  }, [output]);
   return (
     <div className="preview-wrapper">
       <iframe
