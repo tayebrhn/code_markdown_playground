@@ -1,8 +1,10 @@
 import "bulmaswatch/superhero/bulmaswatch.min.css";
-import CodeCell from "./components/code_component/code-cell";
+import "@fortawesome/fontawesome-free/css/all.min.css"
 import { useEffect, useRef } from "react";
 import { initBundler } from "./bundler";
-import TextEditor from "./components/md_component/text-editor";
+import { Provider } from "react-redux";
+import { store } from "./state";
+import CellList from "./components/cell-list";
 
 function App() {
   const initBundlerRef = useRef<any>(null);
@@ -11,9 +13,9 @@ function App() {
   }, []);
 
   return (
-    <>
-      <TextEditor></TextEditor>
-    </>
+    <Provider store={store}>
+      <CellList/>
+    </Provider>
   );
 }
 export default App;
