@@ -1,54 +1,56 @@
-# React + TypeScript + Vite
+# 🧠 Code & Markdown Playground
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A **browser-based code and markdown editor** that executes JavaScript and supports `.jsx` and imports using `esbuild-wasm` and custom esbuild plugin. This project is a comprehensive sandbox that previews JavaScript output and renders markdown, all in real time — right from the browser.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## Expanding the ESLint configuration
+- 🧮 **JavaScript & JSX Execution** — Powered by `esbuild-wasm`, including support for npm-style `import` syntax in `.jsx` files.
+- ✍️ **Live Markdown Editor** — With preview rendering using `@uiw/react-md-editor`.
+- 🧠 **Monaco Editor Integration** — Syntax highlighting, IntelliSense, and error checking.
+- 🔄 **Redux-Powered State Management** — Built with `@reduxjs/toolkit`, `redux-thunk`, and `immer`.
+- 🎨 **Prettier Integration** — Format your code with a single click.
+- 📦 **Extensive npm Ecosystem Integration** — Exercises bundling, parsing, and transformation of JS modules in-browser.
+- 🗃️ **Upcoming**: Save code and markdown content to files (WIP 🚧)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 🚀 Tech Stack
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **Language**: TypeScript
+- **Framework**: React
+- **State Management**: Redux Toolkit
+- **Build Tool**: Vite
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+## 📦 Dependencies
+
+### Runtime
+
+```json
+{
+  "@babel/parser": "^7.27.5",
+  "@babel/traverse": "^7.27.4",
+  "@fortawesome/fontawesome-free": "^6.7.2",
+  "@monaco-editor/react": "4.7.0",
+  "@reduxjs/toolkit": "^2.8.2",
+  "@types/prettier": "2.7.3",
+  "@types/react-resizable": "^3.0.8",
+  "@uiw/react-md-editor": "^4.0.7",
+  "axios": "^1.9.0",
+  "bulmaswatch": "^0.8.1",
+  "esbuild-wasm": "0.25.5",
+  "immer": "^10.1.1",
+  "localforage": "1.10.0",
+  "monaco-jsx-highlighter": "2.77.77",
+  "prettier": "3.5.3",
+  "react": "^19.1.0",
+  "react-dom": "^19.1.0",
+  "react-redux": "^9.2.0",
+  "react-resizable": "3.0.5",
+  "redux": "^5.0.1",
+  "redux-thunk": "^3.1.0"
+}
 ```
