@@ -19,13 +19,13 @@ const initState: CellState = {
     data: {}
 }
 
-const reducer = produce((state: CellState=initState, action: Action) => {
+const reducer = produce((state: CellState = initState, action: Action) => {
     // setAutoFreeze(false);
 
     switch (action.type) {
         case ActionType.UPDATE_CELL:
             const { id, content } = action.payload
-            state.data[id].content = content
+            state.data[id].content = content || ""
             return state
         case ActionType.DELETE_CELL:
             delete state.data[action.payload.id]
@@ -41,20 +41,19 @@ const reducer = produce((state: CellState=initState, action: Action) => {
             state.order[index] = state.order[targetIndex]
             state.order[targetIndex] = action.payload.id
             return state
-        case ActionType.INSERT_CELL_BEFORE:
+        case ActionType.INSERT_CELL_AFTER:
             const cell: Cell = {
                 id: randomId(),
                 type: action.payload.type,
                 content: ""
             }
-            console.log(Object.isExtensible(state.data)); // should return true
-            state.data[cell.id] = cell
 
+            state.data[cell.id] = cell
             const foundIndex = state.order.findIndex((id) => id === action.payload.id)
             if (foundIndex < 0) {
-                state.order.push(cell.id)
+                state.order.unshift(cell.id)
             } else {
-                state.order.splice(foundIndex, 0, cell.id)
+                state.order.splice(foundIndex+1, 0, cell.id)
             }
             return state
         default:

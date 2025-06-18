@@ -16,7 +16,7 @@
   color: red;
 } */
 .react-draggable-transparent-selection .preview-wrapper:after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   right: 0;

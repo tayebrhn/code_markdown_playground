@@ -8,7 +8,7 @@ export const store = configureStore({
 })
 
 const n:Action = {
-    type:ActionType.INSERT_CELL_BEFORE,
+    type:ActionType.INSERT_CELL_AFTER,
     payload:{
         id:null,
         type:'code'
@@ -16,7 +16,7 @@ const n:Action = {
 }
 store.dispatch(n)
 const nn:Action = {
-    type:ActionType.INSERT_CELL_BEFORE,
+    type:ActionType.INSERT_CELL_AFTER,
     payload:{
         id:null,
         type:'text'

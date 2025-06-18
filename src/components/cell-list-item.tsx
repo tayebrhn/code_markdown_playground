@@ -1,4 +1,5 @@
-import { Fragment, type JSX } from "react";
+import "./styles/cell-list-item.css";
+import { type JSX } from "react";
 import type { Cell } from "../state";
 import CodeCell from "./code-cell";
 import TextCell from "./text-cell";
@@ -11,17 +12,26 @@ interface CellListItemProps {
 const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
   let child: JSX.Element;
   if (cell.type === "code") {
-    child = <CodeCell cell={cell} />;
+    child = (
+      <>
+        <div className="action-bar-wrapper">
+          <ActionBar id={cell.id} />
+        </div>
+        <CodeCell cell={cell} />
+      </>
+    );
   } else {
-    child = <TextCell cell={cell} />;
+    child = (
+      <>
+        <div className="action-bar-wrapper">
+          <ActionBar id={cell.id} />
+        </div>
+        <TextCell cell={cell} />
+      </>
+    );
   }
 
-  return (
-    <div className="cell-list-item">
-      <ActionBar id={cell.id} />
-      {child}
-    </div>
-  );
+  return <div className="cell-list-item">{child}</div>;
 };
 
 export default CellListItem;
