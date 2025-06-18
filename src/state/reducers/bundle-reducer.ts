@@ -15,6 +15,7 @@ const reducer = produce(
     (state: BundleState = initState, action: Action) => {
         switch (action.type) {
             case ActionType.BUNDLE_CREATED:
+                state[action.payload.cellId]=action.payload.bundle
                 return state
             default:
                 return state

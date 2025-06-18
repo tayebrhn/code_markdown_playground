@@ -34,8 +34,8 @@ export interface UpdateCellAction {
 export interface BundleCreatedAction {
     type: ActionType.BUNDLE_CREATED
     payload: {
-        id: string,
-        content: {
+        cellId: string,
+        bundle: {
             code: string,
             err: string
         }

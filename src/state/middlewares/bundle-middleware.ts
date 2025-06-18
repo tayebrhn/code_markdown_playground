@@ -21,8 +21,8 @@ console.log(getState)
         dispatch({
             type: ActionType.BUNDLE_CREATED,
             payload: {
-                id: action.payload.id,
-                content: result
+                cellId: action.payload.id,
+                bundle: result
             }
         })
         console.log("result", result)
