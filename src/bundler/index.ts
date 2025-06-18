@@ -14,6 +14,7 @@ export const initBundler = async (initBundlerRef: React.RefObject<any>) => {
 };
 
 export default async (rawCode: string) => {
+
   try {
     const result = await esbuild.build({
       entryPoints: ["index.js"],
