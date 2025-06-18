@@ -54,3 +54,35 @@ A **browser-based code and markdown editor** that executes JavaScript and suppor
   "redux-thunk": "^3.1.0"
 }
 ```
+
+# 📁 Project Goals
+## This project serves as a learning playground for working with:
+
+- 
+- TypeScript-heavy React apps
+- 
+- Redux Toolkit and middlewares
+- 
+- Browser bundling using esbuild-wasm
+- 
+- Markdown rendering in React
+- 
+- File persistence and local storage
+- 
+- Integration with npm module resolution
+
+🛠️ Getting Started
+bash
+Copy
+Edit
+# Clone the repo
+```
+git clone https://github.com/ty-ab/jtbook.git
+cd code-markdown-playground
+
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+```
