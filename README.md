@@ -58,17 +58,11 @@ A **browser-based code and markdown editor** that executes JavaScript and suppor
 # 📁 Project Goals
 ## This project serves as a learning playground for working with:
 
-- 
 - TypeScript-heavy React apps
-- 
 - Redux Toolkit and middlewares
-- 
 - Browser bundling using esbuild-wasm
-- 
 - Markdown rendering in React
-- 
 - File persistence and local storage
-- 
 - Integration with npm module resolution
 
 🛠️ Getting Started
