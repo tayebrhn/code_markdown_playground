@@ -2,6 +2,8 @@
 
 A **browser-based code and markdown editor** that executes JavaScript and supports `.jsx` and imports using `esbuild-wasm` and custom esbuild plugin. This project is a comprehensive sandbox that previews JavaScript output and renders markdown, all in real time — right from the browser.
 
+preview link <a href="https://github.com/tayebrhn/code_markdown_playground">here</a>
+
 ---
 
 ## ✨ Features
