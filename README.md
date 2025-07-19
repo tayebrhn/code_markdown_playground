@@ -71,8 +71,8 @@ Copy
 Edit
 # Clone the repo
 ```
-git clone https://github.com/ty-ab/jtbook.git
-cd jtbook
+git clone https://github.com/tayebrhn/code_markdown_playground.git
+cd code_markdown_playground
 
 # Install dependencies
 npm install
