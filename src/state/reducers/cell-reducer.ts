@@ -1,7 +1,7 @@
 import type { Cell } from "../cell"
 import { ActionType } from "../action-types"
 import type { Action } from "../actions"
-import { produce, setAutoFreeze } from "immer"
+import { produce } from "immer"
 
 interface CellState {
     loading: boolean,

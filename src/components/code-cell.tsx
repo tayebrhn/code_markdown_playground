@@ -19,13 +19,11 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   //   code: string;
   //   err: string;
   // }>();
-
   // useEffect(() => {
   //   const timer = setTimeout(async () => {
   //     const output = await bundler(cell.content);
   //     setOutput(output);
   //   }, 900);
-
   //   return () => {
   //     clearTimeout(timer);
   //   };

@@ -1,5 +1,5 @@
 import { ActionType } from "../action-types"
-import type { BundleCreatedAction, DeleteCellAction, Direction, InsertCellAfterAction, MoveCellAction, UpdateCellAction } from "../actions"
+import type { DeleteCellAction, Direction, InsertCellAfterAction, MoveCellAction, UpdateCellAction } from "../actions"
 import type { CellType } from "../cell"
 
 export const updateCell = (id: string, content: string | null): UpdateCellAction => {

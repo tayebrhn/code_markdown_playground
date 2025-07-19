@@ -1,5 +1,5 @@
 import "./styles/text-editor.css";
-import MDEditor, { type ContextStore } from "@uiw/react-md-editor";
+import MDEditor from "@uiw/react-md-editor";
 import { useEffect, useRef, useState } from "react";
 import type { Cell } from "../state";
 import { useAction } from "../hooks/use-action";
@@ -36,7 +36,7 @@ const TextCell: React.FC<TextCellProps> = ({cell}) => {
       <div className="text-editor" ref={editRef}>
         <MDEditor
           value={cell.content}
-          onChange={(value?: string) => updateCell(cell.id,value)}
+          onChange={(value?: string) => updateCell(cell.id,value||'')}
         />
       </div>
     );
