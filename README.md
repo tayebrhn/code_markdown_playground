@@ -72,7 +72,7 @@ Edit
 # Clone the repo
 ```
 git clone https://github.com/ty-ab/jtbook.git
-cd code-markdown-playground
+cd jtbook
 
 # Install dependencies
 npm install
